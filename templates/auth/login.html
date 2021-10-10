@@ -1,0 +1,31 @@
+<!doctype html>
+<head>
+    <title>Login - Book A Rail</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login_style.css') }}">  
+</head>
+    <body>
+    <div class="login-box">
+    <img src="{{ url_for('static', filename='avatar.png') }}" class="avatar">
+        <h1>Login Here</h1>
+
+            
+
+            <form method="post">
+            <p>Username</p>
+            <input type="text" name="username" placeholder="Enter Username">
+            <p>Password</p>
+            <input type="password" name="password" placeholder="Enter Password">
+            <section class="content">
+                {% for message in get_flashed_messages() %}
+                <div class="flash">{{ message }}</div>
+                {% endfor %}
+            </section>
+            <br>
+            <input type="submit" name="submit" value="Login">
+            <br><br>
+            <p align='center'>Don't have an account?</p>  
+            <p align='center'><a href="{{ url_for('auth.register') }}"><u>Sign Up Now</u></a></p>    
+            </form>
+        </div>
+    </body>
+</html>

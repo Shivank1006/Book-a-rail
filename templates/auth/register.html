@@ -1,0 +1,36 @@
+<!doctype html>
+<head>
+    <title>Register - Book A Rail</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='register.css') }}">  
+</head>
+    <body>
+    <div class="login-box">
+    <img src="{{ url_for('static', filename='avatar.png') }}" class="avatar">
+        <h1>Sign Up Here</h1>
+            <form method="post">
+            <p>Username</p>
+            <input type="text" name="username" placeholder="Enter Username">
+            <p>Name</p>
+            <input type="text" name="name" placeholder="Enter Name">
+            <p>Credit Card Number</p>
+            <input type="text" name="card_number" placeholder="Enter Card Number">
+            <p>Address</p>
+            <input type="text" name="address" placeholder="Enter Address">
+            <p>Password</p>
+            <input type="password" name="password1" placeholder="Enter Password">
+            <p>Retype Password</p>
+            <input type="password" name="password2" placeholder="Retype Password">
+
+            <section class="content">
+                {% for message in get_flashed_messages() %}
+                <div class="flash">{{ message }}</div>
+                {% endfor %}
+            </section>
+            <input type="submit" name="submit" value="Register">
+            <br>
+            <p align='center'>Already have an account?</p>  
+            <p align='center'><a href="{{ url_for('auth.login') }}"><u>Login Now</u></a></p>    
+            </form>
+        </div>
+    </body>
+</html>
