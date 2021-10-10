@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Search</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
+    <style>
+      body{
+        margin: 0;
+        padding: 0;
+        background: url('../static/image5.jpg');
+        background-size: cover;
+        background-position: top;
+        font-family: sans-serif;
+        zoom: 80%;
+    }
+      
+      form {
+        display: -webkit-box;
+        display: flex;
+        flex-wrap: wrap
+      }
+      
+      form > input {
+          -webkit-box-flex: 1;
+                  flex: 1 1 10ch;
+          margin: .5rem
+        }
+      
+      input {
+        border: none;
+        background: hsl(0, 0%, 93%);
+        border-radius: .25rem;
+        padding: .75rem 1rem
+      }
+      
+      input[type="submit"] {
+          background:#1c8adb;
+          color: white;
+          box-shadow: 0 .75rem .5rem -.5rem hsl(0, 50%, 80%);
+        }
+
+        input[type="submit"]:hover
+        {
+            cursor: pointer;
+            background: #39dc79;
+            color: #000;
+        }
+
+
+.navbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+.navbar li {
+  float: left;
+}
+
+.navbar li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.navbar li a:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color: #4CAF50;
+}
+
+.container86 {
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.responsive-table li {
+  border-radius: 3px;
+  padding: 25px 30px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+.responsive-table .table-header {
+  background-color: #5c5c5c;
+  font-size: 16px;
+  color: rgb(250, 246, 246);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.responsive-table .table-row {
+  background-color: #fff;
+  box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
+}
+.responsive-table .col-1 {
+  flex-basis: 10%;
+}
+.responsive-table .col-2 {
+  flex-basis: 36%;
+}
+.responsive-table .col-3 {
+  flex-basis: 25%;
+}
+.responsive-table .col-4 {
+  flex-basis: 20%;
+}
+.responsive-table .col-5 {
+  flex-basis: 9%;
+}
+
+.search {
+  width: 60%;
+  margin: auto;
+}
+
+.button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 0px 0px;
+  cursor: pointer;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+}
+
+.button2:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.flash { margin: 1em 0; color: rgb(232, 248, 8);}
+
+</style>
+</head>
+<body>
+
+{% if g.user %}
+  
+    <div class='navbar'>
+    <ul>
+      <li><a href="{{ url_for('user.index') }}">Home</a></li>
+      {% if session['admin'] %}
+        <li><a href="{{ url_for('user.schedule') }}">Schedule Train</a></li>
+      {% endif %}
+      <li><a class="active" href="#search">Search Trains</a></li>
+      <li><a href="{{ url_for('user.book') }}">Book Ticket</a></li>
+      <li><a href="{{ url_for('user.history') }}">Booking History</a></li>
+      <li style="float:right"><a>Hi, {{ g.user['name'] }}</a></li>
+      <li style="float:right"><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
+    </ul>
+  </div>
+  
+  <div class='search'>
+    <h1 style="color:#fff; font-family:sans-serif; font-size:300%;">Search The Trains</h1>
+    <form method="post">
+      <input type="text" placeholder="Source" name="Source">
+      <input type="text" placeholder="Destination" name="Destination">
+      <input type="date" id="datefield" name="date">
+      <input type="submit" value="Search">
+    </form>
+    <section class="content">
+      {% for message in get_flashed_messages() %}
+      <div class="flash">{{ message }}</div>
+      {% endfor %}
+  </section>
+  </div>
+  {% if trains %}
+  <div>
+    <h2 align="center" style="color:rgb(232, 248, 8); font-family:sans-serif;">{{Source}}  ➤  {{dest}}</h2>
+  </div>
+  {% endif %}
+
+    <div class="container86">
+      <ul class="responsive-table">
+        {% if trains %}
+          <li class="table-header">
+            <div class="col col-1"><b>Train Number</b></div>
+            <div class="col col-2"><b>Train Name</b></div>
+            <div class="col col-3"><b>AC Seats Available</b></div>
+            <div class="col col-4"><b>Sleeper Seats Available</b></div>
+            <div class="col col-5"></div>
+          </li>
+        {% endif %}
+        {% for train in trains %}
+          <li class="table-row">
+            <div class="col col-1" data-label="Job Id">{{train[0]}}</div>
+            <div class="col col-2" data-label="Customer Name">{{train[1]}}</div>
+            <div class="col col-3" data-label="Amount">{{train[5]}}</div>
+            <div class="col col-4" data-label="Payment Status">{{train[6]}}</div>
+            <div class="col col-5"><a href="{{ url_for('user.book') }}"><button class="button button2">Book</button></a></div>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+{% endif %}
+</body>
+<script>
+  function add_months(dt, n) 
+  {
+
+    return new Date(dt.setMonth(dt.getMonth() + n));      
+  }
+
+  var dt = new Date();
+  var initial = add_months(dt, 1);
+  var dt = new Date();
+  var end = add_months(dt, 5);
+  
+  var dd = initial.getDate();
+  var mm = initial.getMonth(); 
+  var yyyy = initial.getFullYear();
+
+  var dd2 = end.getDate();
+  var mm2 = end.getMonth(); 
+  var yyyy2 = end.getFullYear();
+
+  if(dd<10){
+    dd='0'+dd
+  } 
+  if(mm<10){
+    mm='0'+mm
+  }
+  
+  if(dd2<10){
+    dd2='0'+dd2
+  } 
+  if(mm2<10){
+    mm2='0'+mm2
+  } 
+  
+  initial_date = yyyy+'-'+mm+'-'+dd;
+  end_date = yyyy2+'-'+mm2+'-'+dd2;
+  document.getElementById("datefield").setAttribute("min", initial_date);
+  document.getElementById("datefield").setAttribute("max", end_date);
+  </script>
+</html> 

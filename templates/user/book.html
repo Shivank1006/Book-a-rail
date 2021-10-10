@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Book Ticket</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='register.css') }}"> 
+    <style>
+      body{
+        margin: 0;
+        padding: 0;
+        background: url('../static/image3.jpg');
+        background-size: cover;
+        background-position: top;
+        font-family: sans-serif;
+        zoom: 80%;
+    }
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+p {
+  color: white;
+  padding: 10px 50px;
+  text-decoration: none;
+  margin: 0
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color: #4CAF50;
+}
+.login-box{
+  width: 50%;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%,-50%);
+  box-sizing: border-box;
+  padding: 70px 30px;
+  overflow: auto;
+}
+
+h1{
+  margin: 0;
+  padding: 0 0 20px;
+  text-align: center;
+  font-size: 22px;
+}
+
+.login-box p{
+  margin: 0;
+  padding: 0;
+  font-weight: bold;
+}
+.login-box input[type="text"], input[type="password"]
+{
+  width: 100%;
+  margin-bottom: 20px;
+  border: none;
+  border-bottom: 1px solid #fff;
+  background: transparent;
+  outline: none;
+  height: 40px;
+  color: #fff;
+  font-size: 16px;
+}
+
+.login-box input[type="number"]
+{
+  width: 15%;
+  margin-bottom: 20px;
+  border: none;
+  border-bottom: 1px solid #fff;
+  background: transparent;
+  outline: none;
+  height: 40px;
+  color: #fff;
+  font-size: 16px;
+}
+
+.login-box input[type="radio"]
+{
+  width: 5%;
+  margin-bottom: 20px;
+  border: none;
+  border-bottom: 1px solid #fff;
+  background: transparent;
+  outline: none;
+  height: 15px;
+  color: #fff;
+  font-size: 16px;
+}
+
+.login-box input[type="date"]
+{
+  width: 100%;
+  margin-bottom: 20px;
+  border: none;
+  border-bottom: 1px solid #fff;
+  background: transparent;
+  outline: none;
+  height: 40px;
+  color: #fff;
+  font-size: 16px;
+}
+.login-box input[type="submit"]
+{
+  width: 100%;
+  margin-bottom: 20px;
+  border: none;
+  outline: none;
+  height: 40px;
+  background: #1c8adb;
+  color: #fff;
+  font-size: 18px;
+  border-radius: 20px;
+}
+.login-box input[type="submit"]:hover
+{
+  cursor: pointer;
+  background: #39dc79;
+  color: #000;
+}
+
+.login-box a{
+  text-decoration: none;
+  font-size: 16px;
+  color: #fff;
+}
+.login-box a:hover
+{
+  color: #39dc79;
+}
+
+.flash { margin: 1em 0; color: rgb(232, 248, 8);}
+
+
+</style>
+</head>
+<body>
+
+{% if g.user %}
+  
+  <ul>
+    <li><a href="{{ url_for('user.index') }}">Home</a></li>
+    {% if session['admin'] %}
+      <li><a href="{{ url_for('user.schedule') }}">Schedule Train</a></li>
+    {% endif %}
+    <li><a href="{{ url_for('user.search') }}">Search Trains</a></li>
+    <li><a class="active" href="#book">Book Ticket</a></li>
+    <li><a href="{{ url_for('user.history') }}">Booking History</a></li>
+    <li style="float:right"><a>Hi, {{ g.user['name'] }}</a></li>
+    <li style="float:right"><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
+  </ul>
+
+  <div class="login-box">
+    <h1>Book Ticket</h1>
+        <form method="post">
+          <section class="content">
+            {% for message in get_flashed_messages() %}
+            <div class="flash">{{ message }}</div>
+            {% endfor %}
+        </section>
+        <br><br>
+        <p>Train Number</p>
+        <input type="text" name="train_num" placeholder="Enter train number">
+        <p>Source</p>
+        <input type="text" name="Source" placeholder="Source">
+        <p>Destination</p>
+        <input type="text" name="Destination" placeholder="Destination">
+        <p>Date</p>
+        <input type="date" id="datefield" name="date">
+          <br><br>
+          <b>Number of passengers:</b>
+          <input type="number" id="quantity" name="pass_num" min="1" max="4">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <b>Class:</b>
+          <input type="radio" name="class" value="AC"> AC
+          <input type="radio" name="class" value="Sleeper"> Sleeper
+
+        <h3>Passenger 1 details</h3>
+        <input type="text" name="pass1" placeholder="Enter name">
+          <b>Gender:</b>
+          <input type="radio" name="gender1" value="M" checked> Male
+          <input type="radio" name="gender1" value="F"> Female
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Age:</b>
+        <input type="number" id="quantity" name="age1" min="0" max="120">
+
+        <h3>Passenger 2 details</h3>
+        <input type="text" name="pass2" placeholder="Enter name">
+          <b>Gender:</b>
+          <input type="radio" name="gender2" value="M" checked> Male
+          <input type="radio" name="gender2" value="F"> Female
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Age:</b>
+        <input type="number" id="quantity" name="age2" min="0" max="120">
+
+        <h3>Passenger 3 details</h3>
+        <input type="text" name="pass3" placeholder="Enter name">
+          <b>Gender:</b>
+          <input type="radio" name="gender3" value="M" checked> Male
+          <input type="radio" name="gender3" value="F"> Female
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Age:</b>
+        <input type="number" id="quantity" name="age3" min="0" max="120">
+
+        <h3>Passenger 4 details</h3>
+        <input type="text" name="pass4" placeholder="Enter name">
+          <b>Gender:</b>
+          <input type="radio" name="gender4" value="M" checked> Male
+          <input type="radio" name="gender4" value="F"> Female
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Age:</b>
+        <input type="number" id="quantity" name="age4" min="0" max="120">
+
+        <br><br>
+        
+        <input type="submit" name="submit" value="Schedule">   
+        </form>
+    </div>
+
+{% endif %}
+
+</body>
+<script>
+  function add_months(dt, n) 
+  {
+
+    return new Date(dt.setMonth(dt.getMonth() + n));      
+  }
+
+  var dt = new Date();
+  var initial = add_months(dt, 1);
+  var dt = new Date();
+  var end = add_months(dt, 5);
+  
+  var dd = initial.getDate();
+  var mm = initial.getMonth(); 
+  var yyyy = initial.getFullYear();
+
+  var dd2 = end.getDate();
+  var mm2 = end.getMonth(); 
+  var yyyy2 = end.getFullYear();
+
+  if(dd<10){
+    dd='0'+dd
+  } 
+  if(mm<10){
+    mm='0'+mm
+  }
+  
+  if(dd2<10){
+    dd2='0'+dd2
+  } 
+  if(mm2<10){
+    mm2='0'+mm2
+  } 
+  
+  initial_date = yyyy+'-'+mm+'-'+dd;
+  end_date = yyyy2+'-'+mm2+'-'+dd2;
+  document.getElementById("datefield").setAttribute("min", initial_date);
+  document.getElementById("datefield").setAttribute("max", end_date);
+  </script>
+</html> 

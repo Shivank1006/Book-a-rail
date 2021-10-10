@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+body {
+  font-family: Arial;
+  color: rgb(0, 0, 0);
+}
+
+.split {
+  height: 100%;
+  width: 50%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+.left {
+  left: 0;
+  background: url('../../static/image6.jpg');
+  background-size: cover;
+}
+
+.right {
+  right: 0;
+  background-color: rgb(245, 245, 245);
+}
+
+.button {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #1c8adb;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 28px;
+  padding: 20px;
+  width: 40%;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 30px;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button:hover{
+  background-color: #39dc79;
+}
+.button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 25px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+h1 {
+  padding-left: 50px;
+}
+
+h2 {
+  padding-left: 50px;
+}
+
+h4 {
+  padding-left: 50px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="split left">
+</div>
+
+<div class="split right">
+  <h1>Book-a-rail</h1><br><br>
+  <h2>Hi, {{ g.user['name'] }}</h2>
+  <h4><a href="{{ url_for('auth.logout') }}">Log Out</a></h4>
+
+  <br><br><br>
+  {% if session['admin'] %}
+    <a href="{{ url_for('user.schedule') }}"><button class="button" style="vertical-align:middle"><span>Schedule Train </span></button></a>
+  {% endif %}
+  <a href="{{ url_for('user.search') }}"><button class="button" style="vertical-align:middle"><span>Search Trains </span></button></a>
+  <a href="{{ url_for('user.book') }}"><button class="button" style="vertical-align:middle"><span>Book Ticket </span></button></a>
+  <a href="{{ url_for('user.history') }}"><button class="button" style="vertical-align:middle"><span>Booking History </span></button></a>
+</div>
+     
+</body>
+</html> 

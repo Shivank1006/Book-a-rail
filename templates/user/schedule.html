@@ -1,0 +1,118 @@
+<!doctype html>
+<head>
+    <title>Schedule</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='register.css') }}">  
+    <style>
+        ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          background-color: #333;
+        }
+        
+        li {
+          float: left;
+        }
+        
+        li a {
+          display: block;
+          color: white;
+          text-align: center;
+          padding: 14px 16px;
+          text-decoration: none;
+        }
+        
+        p {
+          color: white;
+          padding: 10px 50px;
+          text-decoration: none;
+          margin: 0
+        }
+        
+        li a:hover:not(.active) {
+          background-color: #111;
+        }
+        
+        .active {
+          background-color: #4CAF50;
+        }
+        </style>
+</head>
+    <body>
+        <ul>
+            <li><a href="{{ url_for('user.index') }}">Home</a></li>
+            <li><a class="active" href="#schedule">Schedule Train</a></li>
+            <li><a href="{{ url_for('user.search') }}">Search Trains</a></li>
+            <li><a href="{{ url_for('user.book') }}">Book Ticket</a></li>
+            <li><a href="{{ url_for('user.history') }}">Booking History</a></li>
+            <li style="float:right"><a>Hi, {{ g.user['name'] }}</a></li>
+            <li style="float:right"><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
+        </ul>
+    <div class="login-box">
+        <h1>Schedule a new train</h1>
+            <form method="post">
+            <p>Train Number</p>
+            <input type="text" name="train_num" placeholder="Enter train number">
+            <p>Train Name</p>
+            <input type="text" name="train_name" placeholder="Enter train name">
+            <p>Source</p>
+            <input type="text" name="Source" placeholder="Source">
+            <p>Destination</p>
+            <input type="text" name="Destination" placeholder="Destination">
+            <p>Date</p>
+            <input type="date" id="datefield" name="date" placeholder="dd-mm-yyyy">
+            <p>Number of AC Coaches</p>
+            <input type="text" name="ac_coach" placeholder="Number of AC Coaches">
+            <p>Number of Sleeper Coaches</p>
+            <input type="text" name="Sleeper_coach" placeholder="Number of Sleeper Coaches">
+
+            <section class="content">
+                {% for message in get_flashed_messages() %}
+                <div class="flash">{{ message }}</div>
+                {% endfor %}
+            </section>
+            <input type="submit" name="submit" value="Schedule">   
+            </form>
+        </div>
+    </body>
+    <script>
+      function add_months(dt, n) 
+      {
+
+        return new Date(dt.setMonth(dt.getMonth() + n));      
+      }
+
+      var dt = new Date();
+      var initial = add_months(dt, 4);
+      var dt = new Date();
+      var end = add_months(dt, 13);
+      
+      var dd = initial.getDate();
+      var mm = initial.getMonth(); 
+      var yyyy = initial.getFullYear();
+
+      var dd2 = end.getDate();
+      var mm2 = end.getMonth(); 
+      var yyyy2 = end.getFullYear();
+
+      if(dd<10){
+        dd='0'+dd
+      } 
+      if(mm<10){
+        mm='0'+mm
+      }
+      
+      if(dd2<10){
+        dd2='0'+dd2
+      } 
+      if(mm2<10){
+        mm2='0'+mm2
+      } 
+      
+      initial_date = yyyy+'-'+mm+'-'+dd;
+      end_date = yyyy2+'-'+mm2+'-'+dd2;
+      document.getElementById("datefield").setAttribute("min", initial_date);
+      document.getElementById("datefield").setAttribute("max", end_date);
+      </script>
+</html>
